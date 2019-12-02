@@ -1,0 +1,205 @@
+
+TrafficSecurityFlasher.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000a8  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000011c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000011  00800060  00800060  0000011c  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  0000011c  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000014c  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000080  00000000  00000000  00000188  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000975  00000000  00000000  00000208  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000005af  00000000  00000000  00000b7d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000004b3  00000000  00000000  0000112c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  000000d0  00000000  00000000  000015e0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000543  00000000  00000000  000016b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    0000023c  00000000  00000000  00001bf3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000060  00000000  00000000  00001e2f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
+   4:	20 c0       	rjmp	.+64     	; 0x46 <__bad_interrupt>
+   6:	1f c0       	rjmp	.+62     	; 0x46 <__bad_interrupt>
+   8:	1e c0       	rjmp	.+60     	; 0x46 <__bad_interrupt>
+   a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
+   c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
+   e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
+  10:	1a c0       	rjmp	.+52     	; 0x46 <__bad_interrupt>
+  12:	19 c0       	rjmp	.+50     	; 0x46 <__bad_interrupt>
+
+00000014 <__ctors_end>:
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+
+0000001c <__do_copy_data>:
+  1c:	10 e0       	ldi	r17, 0x00	; 0
+  1e:	a0 e6       	ldi	r26, 0x60	; 96
+  20:	b0 e0       	ldi	r27, 0x00	; 0
+  22:	e8 ea       	ldi	r30, 0xA8	; 168
+  24:	f0 e0       	ldi	r31, 0x00	; 0
+  26:	02 c0       	rjmp	.+4      	; 0x2c <__do_copy_data+0x10>
+  28:	05 90       	lpm	r0, Z+
+  2a:	0d 92       	st	X+, r0
+  2c:	a0 36       	cpi	r26, 0x60	; 96
+  2e:	b1 07       	cpc	r27, r17
+  30:	d9 f7       	brne	.-10     	; 0x28 <__do_copy_data+0xc>
+
+00000032 <__do_clear_bss>:
+  32:	20 e0       	ldi	r18, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	01 c0       	rjmp	.+2      	; 0x3c <.do_clear_bss_start>
+
+0000003a <.do_clear_bss_loop>:
+  3a:	1d 92       	st	X+, r1
+
+0000003c <.do_clear_bss_start>:
+  3c:	a1 37       	cpi	r26, 0x71	; 113
+  3e:	b2 07       	cpc	r27, r18
+  40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
+  42:	03 d0       	rcall	.+6      	; 0x4a <main>
+  44:	2f c0       	rjmp	.+94     	; 0xa4 <_exit>
+
+00000046 <__bad_interrupt>:
+  46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
+
+00000048 <Timer1ms>:
+			sReload[TIMER0].uiLoad8 = TCNT0;
+	
+			sei();
+	
+			return ERROR_TIMER_OK;
+		}
+  48:	08 95       	ret
+
+0000004a <main>:
+}
+
+
+int main(void)
+{
+	SwitchInit( &sKey , &PORTB , 1<<PB0 , 0 , 0 );
+  4a:	00 e0       	ldi	r16, 0x00	; 0
+  4c:	20 e0       	ldi	r18, 0x00	; 0
+  4e:	41 e0       	ldi	r20, 0x01	; 1
+  50:	68 e3       	ldi	r22, 0x38	; 56
+  52:	70 e0       	ldi	r23, 0x00	; 0
+  54:	89 e6       	ldi	r24, 0x69	; 105
+  56:	90 e0       	ldi	r25, 0x00	; 0
+  58:	09 d0       	rcall	.+18     	; 0x6c <SwitchInit>
+
+	#if defined( __AVR_ATmega328P__ ) || defined( __AVR_ATmega32__ ) || defined( __AVR_ATtiny13A__ )
+
+		extern inline enum eTimerError Timer0CompAInit	( const sTimer8Config_t *psTab , void (*pFncCallback)(void) )	
+		{
+			cli(); /**< Vorsichtshalber Interrupts global sperren */
+  5a:	f8 94       	cli
+			{
+				sei();
+				return ERROR_TIMER_NO_ADDRESS;
+			}else
+			{
+				pvTimerCallback[CALLBACK_TIMER0_COMPA] = pFncCallback;
+  5c:	84 e2       	ldi	r24, 0x24	; 36
+  5e:	90 e0       	ldi	r25, 0x00	; 0
+  60:	90 93 63 00 	sts	0x0063, r25	; 0x800063 <__data_end+0x3>
+  64:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <__data_end+0x2>
+				TCCR1B_WGM_CS( psTab->uiWGMxx , psTab->uiCSxx );
+				OCR0A = psTab->uiCnt;
+				TIMSK0_OCIE0A_EN;
+			#endif
+	
+			sei();
+  68:	78 94       	sei
+  6a:	ff cf       	rjmp	.-2      	; 0x6a <main+0x20>
+
+0000006c <SwitchInit>:
+volatile static uint8_t uiRepeat = 25;
+
+/* Prototypen */
+
+enum eSwitchError SwitchInit( sSwitch_t *psSwitch , pRegister_t pPort , uint8_t uiKeyMask , uint8_t uiPullUpMask , uint8_t uiRepeatKeyMask )
+{
+  6c:	0f 93       	push	r16
+  6e:	fc 01       	movw	r30, r24
+	if ( pPort != NULL )
+  70:	61 15       	cp	r22, r1
+  72:	71 05       	cpc	r23, r1
+  74:	a1 f0       	breq	.+40     	; 0x9e <SwitchInit+0x32>
+	{
+		PORT_DDR_ADDR( pPort ) &= ~( uiKeyMask );
+  76:	db 01       	movw	r26, r22
+  78:	8e 91       	ld	r24, -X
+  7a:	94 2f       	mov	r25, r20
+  7c:	90 95       	com	r25
+  7e:	89 23       	and	r24, r25
+  80:	8c 93       	st	X, r24
+		*pPort |= uiPullUpMask;
+  82:	db 01       	movw	r26, r22
+  84:	8c 91       	ld	r24, X
+  86:	28 2b       	or	r18, r24
+  88:	2c 93       	st	X, r18
+	else
+	{
+		return ERROR_SWITCH_NO_PORT;
+	}
+
+	psSwitch->pPort = pPort;
+  8a:	71 83       	std	Z+1, r23	; 0x01
+  8c:	60 83       	st	Z, r22
+	psSwitch->uiMask = uiKeyMask;
+  8e:	45 83       	std	Z+5, r20	; 0x05
+	psSwitch->uiOld = 0;
+  90:	13 82       	std	Z+3, r1	; 0x03
+	psSwitch->uiNew = 0;
+  92:	12 82       	std	Z+2, r1	; 0x02
+	psSwitch->uiInfo = 0;
+  94:	14 82       	std	Z+4, r1	; 0x04
+	psSwitch->uiRepeat = 0;
+  96:	16 82       	std	Z+6, r1	; 0x06
+	psSwitch->uiRepeatKeyMask = uiRepeatKeyMask;
+  98:	07 83       	std	Z+7, r16	; 0x07
+	
+	return ERROR_SWITCH_OK;
+  9a:	80 e0       	ldi	r24, 0x00	; 0
+  9c:	01 c0       	rjmp	.+2      	; 0xa0 <__stack+0x1>
+		PORT_DDR_ADDR( pPort ) &= ~( uiKeyMask );
+		*pPort |= uiPullUpMask;
+	}
+	else
+	{
+		return ERROR_SWITCH_NO_PORT;
+  9e:	81 e0       	ldi	r24, 0x01	; 1
+	psSwitch->uiInfo = 0;
+	psSwitch->uiRepeat = 0;
+	psSwitch->uiRepeatKeyMask = uiRepeatKeyMask;
+	
+	return ERROR_SWITCH_OK;
+}
+  a0:	0f 91       	pop	r16
+  a2:	08 95       	ret
+
+000000a4 <_exit>:
+  a4:	f8 94       	cli
+
+000000a6 <__stop_program>:
+  a6:	ff cf       	rjmp	.-2      	; 0xa6 <__stop_program>

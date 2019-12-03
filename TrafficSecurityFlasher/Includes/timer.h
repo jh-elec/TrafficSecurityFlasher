@@ -254,8 +254,7 @@
 		[CALLBACK_TIMER2_COMPA ] = NULL,
 		[CALLBACK_TIMER2_COMPB ] = NULL,
 	};
-		
-	
+			
 #elif defined( __AVR_ATtiny13A__ )
 
 	enum __attribute__( ( packed ) ) eTimer { TIMER0 , __MAX_TIMER_ENTRYS__ };

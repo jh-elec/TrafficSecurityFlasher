@@ -35,18 +35,17 @@
 
 #define GET_DDR( _PORTx )				( * ( &_PORTx - 1 ) )
 
-#define LED_PORT						PORTA
+#define LED_PORT						PORTB
 
 #define	LED_INIT						( GET_DDR( LED_PORT ) |= 1<<LED_BP )
 
-#define	KEY_PORT						PORTC
+#define	KEY_PORT						PORTB
 #define KEY_BP							3
 
 
 typedef struct  
 {
 	uint16_t uiMilli;
-	//uint8_t uiSecond;
 }sTime_t;
 
 typedef struct  
@@ -75,7 +74,6 @@ typedef struct
 {
 	uint16_t uiOnMs;
 	uint16_t uiOffMs;
-	
 }sLedCnfg_t;
 
 enum ePort
@@ -123,14 +121,13 @@ volatile uint8_t uiLedCnfgIndex = 0;
 
 sLedCnfg_t sLedCnfg[] = /*!<-- Puls / Pausen - Zeiten <--*/
 {
-	// Puls		Pause		 
-	{ 50	,	2000	},
-	{ 100	,	2000	},
-
-	{ 150	,	150		},
-	{ 250	,	250		},
-	{ 500	,	500		},		
-
+	// Puls		Pause      Index		 
+	{ 50	,	2000	}, //[0]
+	{ 100	,	2000	}, //[1]
+	{ 150	,	2000	}, //[2]
+	{ 150	,	150		}, //[3]
+	{ 250	,	250		}, //[4]
+	{ 500	,	500		}, //[5]
 };
 
 volatile sTime_t sLedTime; /*!<-- Led Zeit <--*/

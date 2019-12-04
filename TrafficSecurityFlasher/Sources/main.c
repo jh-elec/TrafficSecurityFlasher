@@ -79,9 +79,7 @@ int main(void)
 {
 	SwitchInit( &sKey , &KEY_PORT , 1<<KEY_BP , 1<<KEY_BP , 0 );
 	
-	Timer0CompInit( &sTimer0OcieSettings[2] , Timer1ms );
-
-//	wdt_enable( WDTO_500MS );
+	Timer0CompAInit( &sTimer0OcieSettings[2] , Timer1ms );
 
 	sLed[ePORT_DDR]->bLed1 = 1;
 	sLed[ePORT_DDR]->bLed2 = 1;

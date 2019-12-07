@@ -4,5 +4,7 @@
 
 Sources\main.c
 
+Sources\shiftreg.c
+
 Sources\Switch.c
 

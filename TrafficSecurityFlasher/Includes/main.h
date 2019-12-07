@@ -26,9 +26,10 @@
 #include <avr/io.h>
 #include <avr/sleep.h>
 #include <avr/wdt.h>
+#include <util/delay.h>
 #include "../Includes/Switch.h"
 #include "../Includes/timer.h"
-
+#include "../Includes/shiftreg.h"
 
 /*!<-- Defines <--*/
 /*****************************************************************/
@@ -40,21 +41,13 @@
 #define	LED_INIT						( GET_DDR( LED_PORT ) |= 1<<LED_BP )
 
 #define	KEY_PORT						PORTB
-#define KEY_BP							3
+#define KEY_BP							4
 
 
 typedef struct  
 {
 	uint16_t uiMilli;
 }sTime_t;
-
-typedef struct  
-{
-	uint8_t bLed1	:1;
-	uint8_t bLed2	:1;
-	uint8_t	bLed3	:1;
-	uint8_t bLed4	:1;
-}sLed_t;
 
 typedef struct  
 {
@@ -99,12 +92,6 @@ enum eState
 
 /*!<-- Globale Variablen <--*/
 /*****************************************************************/
-
-volatile sLed_t *sLed[__MAX_ePORT_ENTRYS__] =
-{
-	[ePORT_DDR]		= (sLed_t*)&GET_DDR( LED_PORT )	,/*!<-- LED Port Mapping (DDR) <--*/
-	[ePORT_PORT]	= (sLed_t*)&LED_PORT			,/*!<-- LED Port Mapping (Port) <--*/
-};
 
 sSwitch_t sKey; /*!<-- Prozess Variable für die Vearbeitung der Taste(n) Signale <--*/
 

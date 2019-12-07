@@ -14,11 +14,6 @@ void GoSleep( void )
 	set_sleep_mode( SLEEP_MODE_PWR_DOWN );
 	cli();
 	
-	sLed[ePORT_PORT]->bLed1 = 1; //
-	sLed[ePORT_PORT]->bLed2 = 1; //
-	sLed[ePORT_PORT]->bLed3 = 1; //
-	sLed[ePORT_PORT]->bLed4 = 1; // .. Leds ausschalten!
-	
 	sleep_enable();
 	sei();
 	sleep_cpu();
@@ -42,10 +37,7 @@ void Timer1ms	( void )
 	{
 		if ( sLedTime.uiMilli++ < sLedCnfg[uiLedCnfgIndex].uiOnMs )
 		{
-			sLed[ePORT_PORT]->bLed1 = 0;
-			sLed[ePORT_PORT]->bLed2 = 0;
-			sLed[ePORT_PORT]->bLed3 = 0;
-			sLed[ePORT_PORT]->bLed4 = 0;
+
 		}
 		else
 		{
@@ -59,10 +51,7 @@ void Timer1ms	( void )
 	{
 		if ( sLedTime.uiMilli++ < sLedCnfg[uiLedCnfgIndex].uiOffMs )
 		{
-			sLed[ePORT_PORT]->bLed1 = 1;
-			sLed[ePORT_PORT]->bLed2 = 1;
-			sLed[ePORT_PORT]->bLed3 = 1;
-			sLed[ePORT_PORT]->bLed4 = 1;
+
 		}
 		else
 		{
@@ -71,6 +60,8 @@ void Timer1ms	( void )
 			sState.bLedIsOn = 1;
 		}
 	}	
+	
+	ShiftRegSend( ShiftRegGet(eSHIFT_REG_1).pRegStart , 1 );
 }
 
 
@@ -81,10 +72,10 @@ int main(void)
 	
 	Timer0CompAInit( &sTimer0OcieSettings[2] , Timer1ms );
 
-	sLed[ePORT_DDR]->bLed1 = 1;
-	sLed[ePORT_DDR]->bLed2 = 1;
-	sLed[ePORT_DDR]->bLed3 = 1;
-	sLed[ePORT_DDR]->bLed4 = 1;
+	for ( uint8_t x = 0 ; x < 8 ; x++ )
+	{
+		ShiftRegSetBit( x ); // Initalisieren
+	}
 
     while (1) 
     {
@@ -95,6 +86,25 @@ int main(void)
 				uiLedCnfgIndex = 0;
 			}
 		}
+		
+		static uint8_t uiIndex = 0;
+		
+		if ( sTime.uiMilli > 250 )
+		{
+			sTime.uiMilli = 0;
+			
+			if ( uiIndex++ < 8 )
+			{
+				ShiftRegSetBit( uiIndex & 0x08 ); // Led x an
+			}
+			else
+			{
+				uiIndex = 0;
+				ShiftRegSet( 0x00 , eSHIFT_REG_1 );
+			}
+			
+		}
+
     }
 }
 

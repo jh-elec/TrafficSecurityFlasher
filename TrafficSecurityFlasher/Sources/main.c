@@ -72,38 +72,13 @@ int main(void)
 	
 	Timer0CompAInit( &sTimer0OcieSettings[2] , Timer1ms );
 
-	for ( uint8_t x = 0 ; x < 8 ; x++ )
-	{
-		ShiftRegSetBit( x ); // Initalisieren
-	}
+	ShiftRegInit();
+	
+	ShiftRegSetByte( eSHIFT_REG_1 , 0xFF );
+	ShiftRegUpdate();
 
     while (1) 
     {
-		if ( SwitchGet( &sKey , 1<<KEY_BP ) )
-		{
-			if ( uiLedCnfgIndex++ > 6 )
-			{
-				uiLedCnfgIndex = 0;
-			}
-		}
-		
-		static uint8_t uiIndex = 0;
-		
-		if ( sTime.uiMilli > 250 )
-		{
-			sTime.uiMilli = 0;
-			
-			if ( uiIndex++ < 8 )
-			{
-				ShiftRegSetBit( uiIndex & 0x08 ); // Led x an
-			}
-			else
-			{
-				uiIndex = 0;
-				ShiftRegSet( 0x00 , eSHIFT_REG_1 );
-			}
-			
-		}
 
     }
 }
